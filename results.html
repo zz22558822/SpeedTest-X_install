@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>測試結果</title>
+  <link rel="icon" href="favicon.ico">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="https://lib.baomitu.com/layui/2.5.7/css/layui.css"  media="all">
+  <style>
+    .header {line-height: 30px; text-align: center;margin-top:25px;margin-bottom: 25px;}
+    .header span>a {color:white;}
+    body {background: #FFFFFF; color: #000000; transition: background 0.3s, color 0.3s;}
+    h1 {
+      display: flex;
+      justify-content: center;
+      user-select:none;
+      -webkit-user-select:none;
+      -moz-user-select:none;
+      -webkit-user-drag:none;
+    }
+    h1 a{
+      color:#000000;
+      display: block;
+      width: 291px;
+      height: 72px;
+      background: url(logo.png);
+      text-indent: 101%;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .layui-badge{
+      margin: 15px 5px 0;
+      height: auto;
+      line-height: 30px;
+      padding: 0;
+      border-radius: 5px;
+    }
+    .ViewChart, .tips{
+      display: inline-block;
+      font-size: 15px;
+      font-weight: bold;
+      padding: 5px 12px;
+      user-select:none;
+      -webkit-user-select:none;
+      -moz-user-select:none;
+      -webkit-user-drag:none;
+    }
+    body #layui-layer1 .layui-layer-content{
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+
+    @media (prefers-color-scheme: dark) {
+      body {background: #181818; color: #E0E0E0;}
+      .footer a {color: #909090;}
+      .footer a:hover {color: #00FF00;}
+      .header span>a {color: #BBBBBB;}
+      h1 {color: #FFFFFF;}
+      .layui-table-header th, .layui-table-cell, .layui-table-view .layui-table {background: #222222; color: #E0E0E0;}
+      .layui-table-sort i {color: #E0E0E0;}
+    }
+
+  </style>
+</head>
+<body>
+<div class="header">
+  <h1><a>SpeedTest-X</a></h1>
+  <span class="layui-badge layui-bg-green"><a class="ViewChart" href="./chart.html" target="_blank">查看趨勢圖表</a></span>
+  <span id="tips" class="layui-badge layui-bg-black"><a class="tips" href="javascript:layer.tips('趨勢圖用於展示不同運營商、時段的速度表現，程式默認保留500條測速結果，調整數量限制: /backend/config.php', '#tips', {
+  tips: [3, '#3595CC'],
+  time: 6000,
+  area: ['300px', 'auto']
+});">?</a></span>
+</div>
+
+<table class="layui-hide" id="test"></table>
+
+
+<script src="https://lib.baomitu.com/layui/2.5.7/layui.js" charset="utf-8"></script>
+
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+
+        table.render({
+            elem: '#test'
+            ,url:'./backend/results-api.php'
+            ,cellMinWidth: 80
+            ,cols: [[
+                {field:'ip', title: 'IP地址'}
+                ,{field:'isp', title: '運營商'}
+                ,{field:'addr', title: '城市'}
+                ,{field:'dspeed', title: '下載速度 (Mbps)', sort: true, align: 'right'}
+                ,{field:'uspeed', title: '上傳速度 (Mbps)', sort: true, align: 'right'}
+                ,{field:'ping', title: 'Ping (ms)', sort: true, align: 'right'}
+                ,{field:'jitter', title: '抖動 (ms)', sort: true, align: 'right'}
+                ,{field:'created', title: '測試時間', sort: true}
+            ]]
+        });
+    });
+</script>
+
+</body>
+</html>

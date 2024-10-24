@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no" />
+<title>SpeedTest-X</title>
+<link rel="icon" href="favicon.ico">
+<script type="text/javascript" src="speedtest.js"></script>
+<script type="text/javascript">
+
+// 初始化速度測試
+var s=new Speedtest(); // 建立測速對象
+var xhr=new XMLHttpRequest();
+var url_report='./backend/report.php';
+var milestone=0;
+var key_prefix=Date.parse(new Date());
+s.onupdate=function(data){ // 調用更新的UI資料
+    I("ip").textContent=data.clientIp || "獲取失敗";
+    I("dlText").textContent=(data.testState==1&&data.dlStatus==0)?"...":data.dlStatus;
+    I("ulText").textContent=(data.testState==3&&data.ulStatus==0)?"...":data.ulStatus;
+    I("pingText").textContent=data.pingStatus;
+    I("jitText").textContent=data.jitterStatus;
+    var prog=(Number(data.dlProgress)*2+Number(data.ulProgress)*2+Number(data.pingProgress))/5;
+	I("progress").style.width=(100*prog)+"%";
+	var ipIspArr = I("ip").textContent.split(' - ', 3);
+	var ip = ipIspArr[0];
+	var isp = ipIspArr[1];
+	var addr = ipIspArr[2] === undefined? '' :ipIspArr[2];
+	var progress = Math.floor(100*prog);
+	var key = key_prefix + "_" + ip;
+	if (progress > 20 && (progress % 10 == 0) && progress != milestone) {
+		console.log(progress);
+		var params = 'key='+key+'&ip='+ip+'&isp='+isp+'&addr='+addr+'&dspeed='+I("dlText").textContent+'&uspeed='+I("ulText").textContent+'&ping='+I("pingText").textContent
+						+'&jitter='+I("jitText").textContent;
+		xhr.timeout = 3000;
+		xhr.ontimeout = function (e) {
+			console.log('上報超時');
+		};
+		xhr.open('POST', url_report, true);
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send(params);
+		milestone = progress;
+	}
+}
+s.onend=function(aborted){ // 測試結束、中止回應
+    I("startStopBtn").className=""; // 顯示開始按鈕
+    if(aborted){ // 清除 UI 初始化測試
+		initUI();
+    }
+}
+
+function startStop(){ // 按下啟動、停止按鈕
+	if(s.getState()==3){
+		// 速度測試運行、中止
+		s.abort();
+	}else{
+		// 開始測試
+		s.start();
+		I("startStopBtn").className="running";
+	}
+}
+
+// 初始化 UI 的函式
+function initUI(){
+	I("dlText").textContent="";
+	I("ulText").textContent="";
+	I("pingText").textContent="";
+	I("jitText").textContent="";
+	I("ip").textContent="";
+}
+
+function I(id){return document.getElementById(id);}
+</script>
+
+<style type="text/css">
+	html,body{
+		border:none; padding:0; margin:0;
+		background:#FFFFFF;
+		color:#202020;
+		user-select:none;
+        -webkit-user-select:none;
+        -moz-user-select:none;
+        -webkit-user-drag:none;
+	}
+	body{
+		text-align:center;
+		font-family:"Roboto",sans-serif;
+	}
+	h1 {
+		display: flex;
+		justify-content: center;
+		margin-top:25px;
+		margin-bottom: 25px;
+		user-select:none;
+        -webkit-user-select:none;
+        -moz-user-select:none;
+        -webkit-user-drag:none;
+	}
+	h1 a{
+		color:#404040;
+		display: block;
+		width: 291px;
+		height: 72px;
+		background: url(logo.png);
+		text-indent: 101%;
+		overflow: hidden;
+		white-space: nowrap;
+	}
+	#startStopBtn{
+		display:inline-block;
+		margin:0 auto;
+		color:#6060AA;
+		background-color:rgba(0,0,0,0);
+		border:0.15em solid #6060FF;
+		border-radius:0.3em;
+		transition:all 0.3s;
+		box-sizing:border-box;
+		width:8em; height:3em;
+		line-height:2.7em;
+		cursor:pointer;
+		box-shadow: 0 0 0 rgba(0,0,0,0.1), inset 0 0 0 rgba(0,0,0,0.1);
+	}
+	#startStopBtn:hover{
+		color: #FFF;
+		background-color: #6060FF;
+		border:0.15em solid #4e4e4e;
+		box-shadow: 0 0 2em rgba(0,0,0,0.1), inset 0 0 1em rgba(0,0,0,0.1);
+	}
+	#startStopBtn.running{
+		background-color:#FF3030;
+		border-color:#FF6060;
+		color:#FFFFFF;
+	}
+	#startStopBtn:before{
+		content:"開始測試";
+	}
+	#startStopBtn.running:before{
+		content:"停止測試";
+	}
+	#test{
+		margin-top:2em;
+	}
+	div.testArea{
+		display:inline-block;
+		width:14em;
+		height:9em;
+		position:relative;
+		box-sizing:border-box;
+	}
+	div.testName{
+		position:absolute;
+		top:0.1em; left:0;
+		width:100%;
+		font-size:1.4em;
+		z-index:9;
+	}
+	div.meterText{
+		position:absolute;
+		bottom:1.5em; left:0;
+		width:100%;
+		font-size:2.5em;
+		z-index:9;
+	}
+	#dlText{
+		color:#6060AA;
+	}
+	#ulText{
+		color:#309030;
+	}
+	#pingText,#jitText{
+		color:#AA6060;
+	}
+	div.meterText:empty:before{
+		color:#505050 !important;
+		content:"0.00";
+	}
+	div.unit{
+		position:absolute;
+		bottom:2em; left:0;
+		width:100%;
+		z-index:9;
+	}
+	div.testGroup{
+		display:inline-block;
+	}
+	@media all and (max-width:65em){
+		body{
+			font-size:1.5vw;
+		}
+	}
+	@media all and (max-width:40em){
+		body{
+			font-size:0.8em;
+		}
+		div.testGroup{
+			display:block;
+			margin: 0 auto;
+		}
+	}
+	#progressBar{
+		width:90%;
+		height:0.3em;
+		background-color:#EEEEEE;
+		position:relative;
+		display:block;
+		margin:0 auto;
+		margin-bottom:2em;
+	}
+	#progress{
+		position:absolute;
+		top:0; left:0;
+		height:100%;
+		width:0%;
+		transition: width 2s;
+		background-color:#90BBFF;
+	}
+	
+	.results{
+		position: fixed;
+		top: 10px;
+		right: 10px;
+		display:inline-block;
+		margin:0 auto;
+		padding: 5px 10px;
+		color:#ff8d58;
+		background-color:rgba(0,0,0,0);
+		border:0.15em solid #ff8d58;
+		border-radius:0.3em;
+		transition:all 0.3s;
+		box-sizing:border-box;
+		cursor:pointer;
+		box-shadow: 0 0 0 rgba(0,0,0,0.1), inset 0 0 0 rgba(0,0,0,0.1);
+		user-select:none;
+        -webkit-user-select:none;
+        -moz-user-select:none;
+        -webkit-user-drag:none;
+	}
+	.results:hover{
+		color: #FFF;
+		background-color: #ff8d58;
+		border:0.15em solid #ffa47a;
+		box-shadow: 0 0 2em rgba(0,0,0,0.1), inset 0 0 1em rgba(0,0,0,0.1);
+	}
+
+	@media (prefers-color-scheme: dark) {
+        html, body {
+            background: #181818;
+            color: #E0E0E0;
+        }
+        h1 {
+            color: #FFFFFF;
+        }
+        #startStopBtn {
+            color: #AAAAFF;
+            border-color: #AAAAFF;
+        }
+        #startStopBtn:hover {
+            box-shadow: 0 0 2em rgba(255, 255, 255, 0.1), inset 0 0 1em rgba(255, 255, 255, 0.1);
+        }
+        #startStopBtn.running {
+            background-color: #FF5050;
+            border-color: #FF8080;
+            color: #FFFFFF;
+        }
+        #progressBar {
+            background-color: #404040;
+        }
+        #progress {
+            background-color: #6060FF;
+        }
+        #dlText {
+            color: #AAAAFF;
+        }
+        #ulText {
+            color: #50C050;
+        }
+        #pingText, #jitText {
+            color: #FF8080;
+        }
+    }
+
+</style>
+</head>
+<body>
+<h1><a>SpeedTest-X</a></h1>
+<div id="startStopBtn" onclick="startStop()"></div>
+<div id="test">
+    <div id="progressBar"><div id="progress"></div></div>
+	<div class="testGroup">
+		<div class="testArea">
+			<div class="testName">下載速度</div>
+			<div id="dlText" class="meterText"></div>
+			<div class="unit">Mbps</div>
+		</div>
+		<div class="testArea">
+			<div class="testName">上傳速度</div>
+			<div id="ulText" class="meterText"></div>
+			<div class="unit">Mbps</div>
+		</div>
+	</div>
+	<div class="testGroup">
+		<div class="testArea">
+			<div class="testName">延遲</div>
+			<div id="pingText" class="meterText"></div>
+			<div class="unit">ms</div>
+		</div>
+		<div class="testArea">
+			<div class="testName">抖動</div>
+			<div id="jitText" class="meterText"></div>
+			<div class="unit">ms</div>
+		</div>
+	</div>
+	<div id="ipArea">
+		IP位址: <span id="ip"></span>
+	</div>
+</div>
+<div class="results">歷 史</div>
+<script type="text/javascript">
+    initUI();
+
+	// 歷史紀錄
+	document.querySelector('.results').addEventListener('click', () => 
+		window.open(`./results.html`, '_blank')
+	);
+</script>
+</body>
+</html>
