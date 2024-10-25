@@ -15,30 +15,31 @@ sudo apt install php php-curl php-json php-mbstring git -y
 # 4. 下載 SpeedTest-X
 echo "正在下載 SpeedTest-X..."
 cd /var/www/html
-sudo git clone https://github.com/SpeedTest-CLI/SpeedTest-X.git
+sudo git clone https://github.com/BadApple9/speedtest-x.git
 
 # 5. 設置權限
 echo "正在設定資料權限..."
-sudo chown -R www-data:www-data /var/www/html/SpeedTest-X
-sudo chmod -R 755 /var/www/html/SpeedTest-X
+sudo chown -R www-data:www-data /var/www/html/speedtest-x
+sudo chmod -R 755 /var/www/html/speedtest-x
 
 # 6. 檔案覆蓋
 echo "正在更新資料..."
-sudo cp /data/index.html /var/www/html/SpeedTest-X/index.html
-sudo cp /data/favicon.ico /var/www/html/SpeedTest-X/favicon.ico
-sudo cp /data/logo.png /var/www/html/SpeedTest-X/logo.png
-sudo cp /data/results.html /var/www/html/SpeedTest-X/results.html
-sudo cp /data/speedtest.js /var/www/html/SpeedTest-X/speedtest.js
-sudo cp /data/config.php /var/www/html/SpeedTest-X/config.php
+cd "$(dirname "$0")"  # 切換到腳本所在的目錄
+sudo cp data/index.html /var/www/html/speedtest-x/index.html
+sudo cp data/favicon.ico /var/www/html/speedtest-x/favicon.ico
+sudo cp data/logo.png /var/www/html/speedtest-x/logo.png
+sudo cp data/results.html /var/www/html/speedtest-x/results.html
+sudo cp data/speedtest.js /var/www/html/speedtest-x/speedtest.js
+sudo cp data/config.php /var/www/html/speedtest-x/config.php
 
 # 7. 配置 Apache
 echo "配置 Apache..."
 sudo bash -c 'cat <<EOL > /etc/apache2/sites-available/speedtest.conf
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost
-    DocumentRoot /var/www/html/SpeedTest-X
+    DocumentRoot /var/www/html/speedtest-x
 
-    <Directory /var/www/html/SpeedTest-X>
+    <Directory /var/www/html/speedtest-x>
         Options Indexes FollowSymLinks
         AllowOverride All
         Require all granted
