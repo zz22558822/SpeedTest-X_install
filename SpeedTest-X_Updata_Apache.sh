@@ -22,13 +22,16 @@ sudo rm -f "$SCRIPT_DIR/data.zip"
 echo "--------------------------------------------"
 echo "--->>> 正在更新資料..."
 echo "--------------------------------------------"
+TARGET_DIR="/var/www/html/speedtest-x"
+
+# 確認 data 資料夾是否存在
 if [ -d "$SCRIPT_DIR/data" ]; then
-    sudo cp "$SCRIPT_DIR/data/index.html" "/opt/SpeedTest-X/index.html"
-    sudo cp "$SCRIPT_DIR/data/favicon.ico" "/opt/SpeedTest-X/favicon.ico"
-    sudo cp "$SCRIPT_DIR/data/logo.png" "/opt/SpeedTest-X/logo.png"
-    sudo cp "$SCRIPT_DIR/data/results.html" "/opt/SpeedTest-X/results.html"
-    sudo cp "$SCRIPT_DIR/data/speedtest.js" "/opt/SpeedTest-X/speedtest.js"
-    sudo cp "$SCRIPT_DIR/data/config.php" "/opt/SpeedTest-X/config.php"
+    sudo cp "$SCRIPT_DIR/data/index.html" "$TARGET_DIR/index.html"
+    sudo cp "$SCRIPT_DIR/data/favicon.ico" "$TARGET_DIR/favicon.ico"
+    sudo cp "$SCRIPT_DIR/data/logo.png" "$TARGET_DIR/logo.png"
+    sudo cp "$SCRIPT_DIR/data/results.html" "$TARGET_DIR/results.html"
+    sudo cp "$SCRIPT_DIR/data/speedtest.js" "$TARGET_DIR/speedtest.js"
+    sudo cp "$SCRIPT_DIR/data/config.php" "$TARGET_DIR/config.php"
 else
     echo "--------------------------------------------"
     echo "--->>> 錯誤：找不到 'data' 資料夾。請確認腳本所在目錄結構正確。"
