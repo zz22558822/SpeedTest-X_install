@@ -119,6 +119,7 @@ function I(id){return document.getElementById(id);}
 		line-height:2.7em;
 		cursor:pointer;
 		box-shadow: 0 0 0 rgba(0,0,0,0.1), inset 0 0 0 rgba(0,0,0,0.1);
+		font-weight: bold;
 	}
 	#startStopBtn:hover{
 		color: #FFF;
@@ -214,7 +215,21 @@ function I(id){return document.getElementById(id);}
 		transition: width 2s;
 		background-color:#90BBFF;
 	}
-	
+	.ipTitle{
+		border: 2px solid #009688;
+		display: inline-block;
+		padding: 10px;
+		border-radius: 7px;
+		color: #FFF;
+		font-weight: bold;
+		background: #009688;
+		margin: 1em;
+		font-size: 16px;
+	}
+	#ip{
+		margin-left: 5px;
+		font-size: 18px;
+	}
 	.results{
 		position: fixed;
 		top: 10px;
@@ -311,7 +326,9 @@ function I(id){return document.getElementById(id);}
 		</div>
 	</div>
 	<div id="ipArea">
-		IP位址: <span id="ip"></span>
+		<p class="ipTitle">IP位址:
+			<span id="ip"></span>
+		</p>
 	</div>
 </div>
 <div class="results">歷 史</div>
