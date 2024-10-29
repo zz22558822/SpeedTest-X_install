@@ -13,4 +13,10 @@ const IP_SERVICE = 'ip.sb';
 /**
  * 是否允許同一IP記錄多條測速結果
  */
-const SAME_IP_MULTI_LOGS = false;
+const SAME_IP_MULTI_LOGS = true;
+
+
+/**
+ * 是否使用完整 IP
+ */
+const Complete_IP_LOGS = true;

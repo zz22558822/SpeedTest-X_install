@@ -31,7 +31,8 @@ if [ -d "$SCRIPT_DIR/data" ]; then
     sudo cp "$SCRIPT_DIR/data/logo.png" "$TARGET_DIR/logo.png"
     sudo cp "$SCRIPT_DIR/data/results.html" "$TARGET_DIR/results.html"
     sudo cp "$SCRIPT_DIR/data/speedtest.js" "$TARGET_DIR/speedtest.js"
-    sudo cp "$SCRIPT_DIR/data/config.php" "$TARGET_DIR/config.php"
+	sudo cp "$SCRIPT_DIR/data/report.php" "$TARGET_DIR/backend/report.php"
+    sudo cp "$SCRIPT_DIR/data/config.php" "$TARGET_DIR/backend/config.php"
 else
     echo "--------------------------------------------"
     echo "--->>> 錯誤：找不到 'data' 資料夾。請確認腳本所在目錄結構正確。"

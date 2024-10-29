@@ -75,7 +75,8 @@ if [ -d "$SCRIPT_DIR/data" ]; then
     sudo cp "$SCRIPT_DIR/data/logo.png" "/opt/SpeedTest-X/logo.png"
     sudo cp "$SCRIPT_DIR/data/results.html" "/opt/SpeedTest-X/results.html"
     sudo cp "$SCRIPT_DIR/data/speedtest.js" "/opt/SpeedTest-X/speedtest.js"
-    sudo cp "$SCRIPT_DIR/data/config.php" "/opt/SpeedTest-X/config.php"
+    sudo cp "$SCRIPT_DIR/data/report.php" "/opt/SpeedTest-X/backend/report.php"
+    sudo cp "$SCRIPT_DIR/data/config.php" "/opt/SpeedTest-X/backend/config.php"
 else
     echo "--------------------------------------------"
     echo "--->>> 錯誤：找不到 'data' 資料夾。請確認腳本所在目錄結構正確。"
