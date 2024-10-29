@@ -51,6 +51,20 @@
       font-size: 20px;
       font-weight: bold;
     }
+    .tips_hint {
+      max-width: 320px;
+      display: none;
+      background-color: #333;
+      color: #fff;
+      padding: 8px;
+      letter-spacing: 3px;
+      border-radius: 8px;
+      position: absolute;
+      z-index: 1000;
+      font-size: 16px;
+      white-space: wrap;
+      border: 4px solid #009688;
+    }
 
 
     @media (prefers-color-scheme: dark) {
@@ -69,11 +83,8 @@
 <div class="header">
   <h1><a>SpeedTest-X</a></h1>
   <span class="layui-badge layui-bg-green"><a class="ViewChart" href="./chart.html" target="_blank">查看趨勢圖表</a></span>
-  <span id="tips" class="layui-badge layui-bg-black"><a class="tips" href="javascript:layer.tips('趨勢圖用於展示不同運營商、時段的速度表現，程式默認保留500條測速結果，調整數量限制: /backend/config.php', '#tips', {
-  tips: [3, '#3595CC'],
-  time: 6000,
-  area: ['300px', 'auto']
-});">?</a></span>
+  <span id="tips" class="layui-badge layui-bg-black"><a class="tips">?</a></span>
+  <div class="tips_hint">趨勢圖用於展示不同運營商、時段的速度表現，程式默認保留500條測速結果，調整數量限制: /backend/config.php</div>
 </div>
 
 <table class="layui-hide" id="test"></table>
@@ -101,6 +112,46 @@
             ]]
         });
     });
+    const ID_Box = document.querySelector('#tips');
+    const tips_hint = document.querySelector('.tips_hint');
+    function positionTooltip(event) {
+        const tooltip = document.querySelector('.tips_hint');
+        const pageWidth = document.documentElement.clientWidth;
+        const pageHeight = document.documentElement.clientHeight;
+        const tooltipWidth = tooltip.offsetWidth;
+        const tooltipHeight = tooltip.offsetHeight;
+        const offsetX = 20;
+        const offsetY = 30;
+        let left = event.pageX + offsetX;
+        let top = event.pageY + offsetY;
+        if (left + tooltipWidth > pageWidth) {
+            left = event.pageX - tooltipWidth - offsetX;
+        }
+        if (top + tooltipHeight > pageHeight) {
+            top = event.pageY - tooltipHeight - offsetY;
+        }
+        if (left < 0) {
+            left = 0;
+        }
+        if (top < 0) {
+            top = 0;
+        }
+        tooltip.style.left = `${left}px`;
+        tooltip.style.top = `${top}px`;
+    }
+    (function () {
+      // 在滑鼠進入時顯示懸浮視窗 並計算懸浮視窗位置
+      ID_Box.addEventListener('mouseover', (e) => {
+          tips_hint.style.display = 'block';
+          positionTooltip(e);
+      });
+      // 滑鼠移動時 計算懸浮視窗位置
+      ID_Box.addEventListener('mousemove', positionTooltip);
+      // 在滑鼠離開時隱藏懸浮視窗
+      ID_Box.addEventListener('mouseout', () => {
+          tips_hint.style.display = 'none';
+      });
+    }())
 </script>
 
 </body>
