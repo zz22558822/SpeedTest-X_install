@@ -39,7 +39,6 @@ $reportData = [
 
 if (empty($reportData['ip'])) exit;
 
-/*
 if (SAME_IP_MULTI_LOGS) {
     $oldLog = $store->where('key', '=', $reportData['key'])->fetch();
 } else {
@@ -60,33 +59,6 @@ if (is_array($oldLog) && empty($oldLog)) {
     } else {
         $ip = $reportData['ip'];
         unset($reportData['ip']);
-        $store->where('_id', '=', $id)->update($reportData);
-    }
-}
-*/
-
-if (SAME_IP_MULTI_LOGS) {
-    // 直接插入新的資訊
-    $results = $store->insert($reportData);
-    // 如果插入後的數量超過最大限制，則刪除最舊的記錄
-    if ($results['_id'] > MAX_LOG_COUNT) {
-        $store->where('_id', '=', $results['_id'] - MAX_LOG_COUNT)->delete();
-    }
-} else {
-    // 若為 false，則根據 IP 檢查舊記錄
-    $oldLog = $store->where('ip', '=', $reportData['ip'])->orderBy('desc', '_id')->fetch();
-
-    if (is_array($oldLog) && empty($oldLog)) {
-        // 如果沒有找到舊記錄，插入新的資訊
-        $results = $store->insert($reportData);
-        if ($results['_id'] > MAX_LOG_COUNT) {
-            $store->where('_id', '=', $results['_id'] - MAX_LOG_COUNT)->delete();
-        }
-    } else {
-        // 如果找到舊記錄，則更新該記錄
-        $id = $oldLog[0]['_id'];
-        $ip = $reportData['ip'];
-        unset($reportData['ip']); // 更新時不需包含 ip
         $store->where('_id', '=', $id)->update($reportData);
     }
 }
