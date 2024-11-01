@@ -89,8 +89,8 @@ function I(id){return document.getElementById(id);}
 	h1 {
 		display: flex;
 		justify-content: center;
-		margin-top:25px;
-		margin-bottom: 25px;
+		margin-top:10px;
+		margin-bottom: 15px;
 		user-select:none;
         -webkit-user-select:none;
         -moz-user-select:none;
@@ -139,7 +139,7 @@ function I(id){return document.getElementById(id);}
 		content:"停止測試";
 	}
 	#test{
-		margin-top:2em;
+		margin-top: 2em;
 	}
 	div.testArea{
 		display:inline-block;
@@ -205,6 +205,7 @@ function I(id){return document.getElementById(id);}
 		position:relative;
 		display:block;
 		margin:0 auto;
+		margin-top:2em;
 		margin-bottom:2em;
 	}
 	#progress{
@@ -223,7 +224,7 @@ function I(id){return document.getElementById(id);}
 		color: #FFF;
 		font-weight: bold;
 		background: #009688;
-		margin: 1em;
+		margin: 0 10px;
 		font-size: 16px;
 	}
 	#ip{
@@ -238,7 +239,7 @@ function I(id){return document.getElementById(id);}
 		margin:0 auto;
 		padding: 5px 10px;
 		color:#ff8d58;
-		background-color:rgba(0,0,0,0);
+		background-color: #FFF;
 		border:0.15em solid #ff8d58;
 		border-radius:0.3em;
 		transition:all 0.3s;
@@ -298,8 +299,12 @@ function I(id){return document.getElementById(id);}
 </head>
 <body>
 <h1><a>SpeedTest-X</a></h1>
-<div id="startStopBtn" onclick="startStop()"></div>
 <div id="test">
+	<div id="ipArea">
+		<p class="ipTitle">IP位址:
+			<span id="ip"></span>
+		</p>
+	</div>
     <div id="progressBar"><div id="progress"></div></div>
 	<div class="testGroup">
 		<div class="testArea">
@@ -325,12 +330,8 @@ function I(id){return document.getElementById(id);}
 			<div class="unit">ms</div>
 		</div>
 	</div>
-	<div id="ipArea">
-		<p class="ipTitle">IP位址:
-			<span id="ip"></span>
-		</p>
-	</div>
 </div>
+<div id="startStopBtn" onclick="startStop()"></div>
 <div class="results">歷 史</div>
 <script type="text/javascript">
     initUI();
