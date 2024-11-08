@@ -52,7 +52,7 @@ echo "--->>> 下載更新資料中..."
 echo "--------------------------------------------"
 sudo wget -O "$SCRIPT_DIR/data.zip" $(curl -s https://api.github.com/repos/zz22558822/SpeedTest-X_install/releases/latest | grep "browser_download_url" | grep ".zip" | cut -d '"' -f 4)
 sudo chmod -R 777 "$SCRIPT_DIR/data.zip"
-sudo wget -O "$SCRIPT_DIR/SpeedTest-X_Updata_Docker.sh" https://github.com/zz22558822/SpeedTest-X_install/blob/main/SpeedTest-X_Updata_Docker.sh
+sudo wget -O "$SCRIPT_DIR/SpeedTest-X_Updata_Docker.sh" https://raw.githubusercontent.com/zz22558822/SpeedTest-X_install/refs/heads/main/SpeedTest-X_Updata_Docker.sh
 sudo chmod -R 777 "$SCRIPT_DIR/SpeedTest-X_Updata_Docker.sh"
 
 # 7. 解壓縮覆蓋檔案
