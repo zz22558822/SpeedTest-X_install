@@ -14,5 +14,7 @@ sudo bash -c "$(wget -qO- https://raw.githubusercontent.com/zz22558822/SpeedTest
 ## 重啟更新美化頁面 (依版本選擇)
 ```
 sudo bash SpeedTest-X_Updata_Apache.sh
+```
+```
 sudo bash SpeedTest-X_Updata_Docker.sh
 ```
